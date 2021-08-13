@@ -24,4 +24,20 @@ export class UserService {
 
     return result;
   }
+
+  findAll() {
+    return this.userRepository.find();
+  }
+
+  findOne(id: number) {
+    return this.userRepository.findOne(id);
+  }
+
+  update(id: number, userData: CreatUserDto) {
+    this.userRepository.update({ id }, userData);
+  }
+
+  delete(id: number) {
+    this.userRepository.delete(id);
+  }
 }
