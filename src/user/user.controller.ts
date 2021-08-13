@@ -1,7 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreatUserDto } from './dto/creat.user.dto';
+import { CreateUserDto } from './dto/create.user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateUserResponse } from './response/create.user.response';
 
 @ApiTags('users')
 @Controller('users')
@@ -12,18 +13,23 @@ export class UserController {
   @ApiResponse({
     status: 200,
     description: 'The created user',
-    type: CreatUserDto,
+    type: CreateUserResponse,
   })
   @Post()
   async create(
     @Body()
-    userData: CreatUserDto,
-  ) {
+    userData: CreateUserDto,
+  ): Promise<CreateUserResponse> {
     return this.userService.create(userData);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'All users',
+    type: [CreateUserResponse],
+  })
   @Get()
-  findAll() {
+  findAll(): Promise<CreateUserResponse[]> {
     return this.userService.findAll();
   }
 
@@ -40,7 +46,7 @@ export class UserController {
     @Param('id')
     id: number,
     @Body()
-    userData: CreatUserDto,
+    userData: CreateUserDto,
   ) {
     this.userService.update(id, userData);
   }
