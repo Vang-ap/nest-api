@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create.user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserResponse } from './response/create.user.response';
-
+import { UpdateUserResponse } from './response/update.user.response';
 @ApiTags('users')
 @Controller('users')
 export class UserController {
@@ -23,6 +23,7 @@ export class UserController {
     return this.userService.create(userData);
   }
 
+  @ApiOperation({ summary: 'Read all users' })
   @ApiResponse({
     status: 200,
     description: 'All users',
@@ -33,6 +34,12 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @ApiOperation({ summary: 'Read user by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'user by id',
+    type: CreateUserResponse,
+  })
   @Get(':id')
   find(
     @Param('id')
@@ -41,6 +48,12 @@ export class UserController {
     return this.userService.findOne(id);
   }
 
+  @ApiOperation({ summary: 'Update user by id' })
+  @ApiResponse({
+    status: 200,
+    description: 'Update user',
+    type: UpdateUserResponse,
+  })
   @Put(':id')
   update(
     @Param('id')
@@ -51,6 +64,7 @@ export class UserController {
     this.userService.update(id, userData);
   }
 
+  @ApiOperation({ summary: 'Delete user by id' })
   @Delete(':id')
   delete(
     @Param('id')
