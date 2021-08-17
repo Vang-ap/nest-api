@@ -5,6 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { AuthenticationModule } from './authentication/authentication.module';
+import { ConfigModule } from '@nestjs/config';
+import { MeteoModule } from './meteo/meteo.module';
 
 @Module({
   imports: [
@@ -18,9 +20,12 @@ import { AuthenticationModule } from './authentication/authentication.module';
       entities: [User],
       synchronize: true,
     }),
-    // import module
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     UserModule,
     AuthenticationModule,
+    MeteoModule,
   ],
   controllers: [AppController],
   providers: [AppService],
