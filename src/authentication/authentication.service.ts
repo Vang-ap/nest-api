@@ -7,12 +7,16 @@ import { UserService } from 'src/user/user.service';
 
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/user/user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(private userService: UserService) { }
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) { }
 
-  async authenticate(email: string, password: string): Promise<boolean> {
+  async authenticate(email: string, password: string): Promise<{ access_token: string }> {
     const user: User = await this.userService.findByEmail(email);
 
     if (!user) {
@@ -25,6 +29,10 @@ export class AuthenticationService {
       throw new ForbiddenException('Bad password');
     }
 
-    return true;
+    const payload = { email: user.email, sub: user.id };
+
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }
